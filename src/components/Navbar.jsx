@@ -54,7 +54,7 @@ export default function Navbar({
 
         <a
           className="
-            navbar-brand
+            navbar-brand btn
           "
           href="#"
         >
@@ -65,6 +65,11 @@ export default function Navbar({
             style={{
               height: "42px",
             }}
+            onClick={() =>
+                  cambiarVista(
+                    "subir"
+                  )
+                }
           />
 
         </a>
@@ -134,13 +139,13 @@ export default function Navbar({
 
               <a
                 className={`
-                  py-0
                   nav-link
                   border-0
                   bg-transparent
                   w-100
                   text-end
                  fw-bold
+                 hover-primary
                 `}
                 onClick={() =>
                   cambiarVista(
@@ -156,7 +161,7 @@ export default function Navbar({
             {/* MIS */}
 
             <li className="
-              nav-item py-1
+              nav-item
               btn
             ">
 
@@ -167,9 +172,7 @@ export default function Navbar({
                   bg-transparent
                   w-100
                   text-end
-                  fw-bold
-                  py-0
-                  
+                  fw-bold    
                 `}
                 onClick={() =>
                   cambiarVista(
@@ -185,13 +188,12 @@ export default function Navbar({
             {/* LOGOUT */}
 
             <li className="
-              nav-item py-1
+              nav-item
               btn
             ">
 
               <a
                 className="
-                py-0
                   nav-link
                   border-0
                   bg-transparent

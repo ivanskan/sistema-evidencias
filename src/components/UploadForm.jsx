@@ -1,9 +1,8 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { subirEvidencia } from "../services/api";
-
-import imageCompression
-  from "browser-image-compression";
+import imageCompression from "browser-image-compression";
+import cursos from "../data/cursos";
 
 export default function UploadForm() {
 
@@ -239,15 +238,46 @@ setPreview2(null);
         <input type="date" className="form-control mb-3" value={fecha}
           onChange={(e) => setFecha( e.target.value)} />
 
-        <input className="form-control mb-3" placeholder="Curso" value={curso}
-          onChange={(e) => setCurso(e.target.value)} />
+        {/* <input className="form-control mb-3" placeholder="Curso" value={curso}
+          onChange={(e) => setCurso(e.target.value)} /> */}
+
+          <input
+  list="lista-cursos"
+  className="
+    form-control
+    mb-3
+  "
+  placeholder="Curso"
+  value={curso}
+  onChange={(e) =>
+    setCurso(
+      e.target.value.toUpperCase()
+    )
+  }
+/>
+
+<datalist id="lista-cursos">
+
+  {
+    cursos.map(
+      (item) => (
+
+        <option
+          key={item}
+          value={item}
+        />
+      )
+    )
+  }
+
+</datalist>
 
         
-        <label className="fw-bold">Lista pdf</label>
+        <label className="fw-semibold mb-2">Lista</label>
         <input  id="pdf" type="file" accept=".pdf" className="form-control mb-3"
           onChange={(e) => setPdf(e.target.files[0])}/>
 
-        <label className="fw-bold">Evidencia 1</label>
+        <label className="fw-semibold mb-2">Evidencia 1</label>
 
         <input id="foto1" type="file" accept="image/*" className="form-control mb-3"
           onChange={(e) => { const file = e.target.files[0];
@@ -259,13 +289,65 @@ setPreview2(null);
           setFoto1(file);
           setPreview1(URL.createObjectURL(file));}}
         />
-        { preview1 && (
-          <img src={preview1}  alt="preview1" className="img-fluid rounded border mb-3 d-block"
-            style={{maxHeight: "200px", objectFit: "cover",}}
-          />
-        )}
+    <div
+  className="
+    border
+    border-2
+    rounded
+    p-3
+    mb-3
+    text-center
+  "
+  style={{
+    borderStyle: "dashed",
+    minHeight: "220px",
+  }}
+>
 
-        <label className="fw-bold"> Evidencia 2 </label>
+  {
+    preview1 ? (
+
+      <img
+        src={preview1}
+        alt="preview1"
+        className="
+          img-fluid
+          rounded
+          d-block
+          mx-auto
+        "
+        style={{
+          maxHeight: "180px",
+          objectFit: "cover",
+        }}
+      />
+
+    ) : (
+
+      <div className="
+        text-muted
+        mt-5
+      ">
+
+        <div
+          style={{
+            fontSize: "3rem",
+          }}
+        >
+          🖼️
+        </div>
+
+        <div>
+          Vista previa
+        </div>
+
+      </div>
+    )
+  }
+
+</div>
+
+        <label className="fw-semibold mb-2"> Evidencia 2 </label>
 
         <input id="foto2" type="file" accept="image/*" className="form-control mb-3"
           onChange={(e) => {const file = e.target.files[0];
@@ -279,11 +361,63 @@ setPreview2(null);
           }}
         />
 
-        { preview2 && (
-          <img src={preview2} alt="preview2" className="img-fluid rounded border mb-3 d-block"
-            style={{  maxHeight: "200px", objectFit: "cover",}}
-            />
-        )}
+      <div
+  className="
+    border
+    border-2
+    rounded
+    p-3
+    mb-3
+    text-center
+  "
+  style={{
+    borderStyle: "dashed",
+    minHeight: "220px",
+  }}
+>
+
+  {
+    preview2 ? (
+
+      <img
+        src={preview2}
+        alt="preview2"
+        className="
+          img-fluid
+          rounded
+          d-block
+          mx-auto
+        "
+        style={{
+          maxHeight: "180px",
+          objectFit: "cover",
+        }}
+      />
+
+    ) : (
+
+      <div className="
+        text-muted
+        mt-5
+      ">
+
+        <div
+          style={{
+            fontSize: "3rem",
+          }}
+        >
+          🖼️
+        </div>
+
+        <div>
+          Vista previa
+        </div>
+
+      </div>
+    )
+  }
+
+</div>
 
         <button
           disabled={loading}

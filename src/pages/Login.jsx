@@ -8,6 +8,9 @@ import logoMobile from "../assets/ERS-logo-min.png";
 export default function Login() {
   const [usuario, setUsuario] = useState("");
   const [password, setPassword] = useState("");
+const [showPassword,
+  setShowPassword] =
+    useState(false);
 
   async function handleLogin(e) {
 
@@ -80,8 +83,8 @@ localStorage.setItem(
 }
 
   return (
-    <div className="container mt-5">
-      <div className="card p-4 shadow mx-auto" style={{ maxWidth: 350}}>
+    <div className="container d-flex align-items-center vh-100">
+      <div className="card p-4 shadow mx-auto" style={{ width: 350}}>
         <div className="text-center mb-4">
 
   {/* MOBILE */}
@@ -132,15 +135,46 @@ localStorage.setItem(
             }
           />
 
-          <input
-            type="password"
-            className="form-control mb-3"
-            placeholder="Password"
-            value={password}
-            onChange={(e) =>
-              setPassword(e.target.value)
-            }
-          />
+          <div className="input-group mb-3">
+
+  <input
+    type={
+      showPassword
+        ? "text"
+        : "password"
+    }
+    className="form-control"
+    placeholder="Password"
+    value={password}
+    onChange={(e) =>
+      setPassword(
+        e.target.value
+      )
+    }
+  />
+
+  <button
+    type="button"
+    className="
+      btn
+      btn-outline-secondary
+    "
+    onClick={() =>
+      setShowPassword(
+        !showPassword
+      )
+    }
+  >
+
+    {
+      showPassword
+        ? "🙈"
+        : "👁️"
+    }
+
+  </button>
+
+</div>
 
           <button className="btn btn-primary w-100">
             Ingresar

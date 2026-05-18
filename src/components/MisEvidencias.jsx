@@ -193,11 +193,11 @@ export default function MisEvidencias() {
                     </th>
 
                     <th>
-                      img 1
+                      img&nbsp;1
                     </th>
 
                     <th>
-                      img 2
+                      img&nbsp;2
                     </th>
 
                     <th>
