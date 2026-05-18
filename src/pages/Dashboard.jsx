@@ -23,12 +23,18 @@ export default function Dashboard() {
 
   function cerrarSesion() {
 
-    localStorage.removeItem(
-      "nombre"
-    );
+  localStorage.removeItem(
+    "usuario"
+  );
 
-    window.location.href = "/";
-  }
+  localStorage.removeItem(
+    "nombre"
+  );
+
+  window.location.replace(
+    "/"
+  );
+}
 
   return (
 
