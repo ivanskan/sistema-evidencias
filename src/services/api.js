@@ -1,6 +1,8 @@
 const URL =
-//   "/api/macros/s/AKfycbzuYLi8IHTa3EYzx3XR_0Jdpk6gkIAPlCK4qAp02EOZcy8aQenpS8obIhliLvH1Z3ws/exec";
-"/api/macros/s/AKfycby3uiB0b8EdhQdPncTZypaZJeN7bt8SCLvjBfafqKpNm3uLMck-t2o1y6aFSlzNYMAT/exec"
+// prod
+"https://script.google.com/macros/s/AKfycby3uiB0b8EdhQdPncTZypaZJeN7bt8SCLvjBfafqKpNm3uLMck-t2o1y6aFSlzNYMAT/exec"
+// dev
+// "/api/macros/s/AKfycby3uiB0b8EdhQdPncTZypaZJeN7bt8SCLvjBfafqKpNm3uLMck-t2o1y6aFSlzNYMAT/exec"  
 
 async function request(data) {
 
