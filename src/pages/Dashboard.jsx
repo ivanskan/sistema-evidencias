@@ -38,7 +38,7 @@ export default function Dashboard() {
 
   return (
 
-    <div>
+    <div className="c">
 
       <Navbar 
         vista={vista} 

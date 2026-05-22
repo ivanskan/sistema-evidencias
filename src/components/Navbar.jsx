@@ -54,7 +54,7 @@ export default function Navbar({
 
         <a
           className="
-            navbar-brand btn
+            navbar-brand btn px-0
           "
           href="#"
         >
@@ -80,6 +80,7 @@ export default function Navbar({
           className="
             navbar-toggler
             border-0
+            pe-0
           "
           type="button"
           onClick={() =>

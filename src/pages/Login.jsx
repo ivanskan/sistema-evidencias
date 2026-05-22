@@ -12,6 +12,12 @@ const [showPassword,
   setShowPassword] =
     useState(false);
 
+    const [loading,
+  setLoading] =
+    useState(false);
+
+    
+
   async function handleLogin(e) {
 
   e.preventDefault();
@@ -30,12 +36,76 @@ const [showPassword,
     return;
   }
 
+  setLoading(true);
+
+  try {
+
+  setLoading(true);
+
   const resp = await login({
 
     usuario,
 
     password,
   });
+
+  if (resp.success) {
+
+    localStorage.setItem(
+      "usuario",
+      resp.usuario
+    );
+
+    localStorage.setItem(
+      "nombre",
+      resp.nombre
+    );
+
+    const Toast =
+      Swal.mixin({
+
+        toast: true,
+
+        position: "top-end",
+
+        showConfirmButton: false,
+
+        timer: 1200,
+
+        timerProgressBar: true,
+      });
+
+    await Toast.fire({
+
+      icon: "success",
+
+      title: "Bienvenido",
+    });
+
+    window.location.href =
+      "/dashboard";
+
+  } else {
+
+    Swal.fire(
+      "Error",
+      "Credenciales inválidas",
+      "error"
+    );
+  }
+
+} catch (error) {
+
+  Swal.fire(
+    "Error",
+    "Ocurrió un error",
+    "error"
+  );
+
+} finally {
+
+  setLoading(false);
+}
 
  if (resp.success) {
 
@@ -176,9 +246,34 @@ localStorage.setItem(
 
 </div>
 
-          <button className="btn btn-primary w-100">
-            Ingresar
-          </button>
+          <button
+  disabled={loading}
+  className="
+    btn
+    btn-primary
+    w-100
+  "
+>
+
+  {
+    loading
+      ? (
+        <>
+          <span
+            className="
+              spinner-border
+              spinner-border-sm
+              me-2
+            "
+          />
+
+          Validando...
+        </>
+      )
+      : "Ingresar"
+  }
+
+</button>
         </form>
       </div>
     </div>

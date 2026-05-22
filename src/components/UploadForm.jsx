@@ -235,13 +235,15 @@ setPreview2(null);
 
       <form onSubmit={handleSubmit}>
 
-        <input type="date" className="form-control mb-3" value={fecha}
+        <label className="fw-semibold mb-2" htmlFor="fecha">Fecha</label>
+
+        <input id="fecha" type="date" className="form-control mb-3" value={fecha}
           onChange={(e) => setFecha( e.target.value)} />
 
-        {/* <input className="form-control mb-3" placeholder="Curso" value={curso}
-          onChange={(e) => setCurso(e.target.value)} /> */}
+        <label className="fw-semibold mb-2" htmlFor="curso">Curso</label>
 
           <input
+          id="curso"
   list="lista-cursos"
   className="
     form-control
@@ -273,11 +275,11 @@ setPreview2(null);
 </datalist>
 
         
-        <label className="fw-semibold mb-2">Lista</label>
-        <input  id="pdf" type="file" accept=".pdf" className="form-control mb-3"
+        <label className="fw-semibold mb-2" htmlFor="pdf" id="lista">Lista</label>
+        <input id="pdf" type="file" accept=".pdf" className="form-control mb-3"
           onChange={(e) => setPdf(e.target.files[0])}/>
 
-        <label className="fw-semibold mb-2">Evidencia 1</label>
+        <label className="fw-semibold mb-2" htmlFor="foto1">Evidencia 1</label>
 
         <input id="foto1" type="file" accept="image/*" className="form-control mb-3"
           onChange={(e) => { const file = e.target.files[0];
@@ -347,7 +349,7 @@ setPreview2(null);
 
 </div>
 
-        <label className="fw-semibold mb-2"> Evidencia 2 </label>
+        <label className="fw-semibold mb-2" htmlFor="foto2"> Evidencia 2 </label>
 
         <input id="foto2" type="file" accept="image/*" className="form-control mb-3"
           onChange={(e) => {const file = e.target.files[0];
@@ -443,7 +445,7 @@ setPreview2(null);
                   {mensaje}
                 </>
               )
-              : "Guardar"
+              : "Enviar evidencia"
           }
 
         </button>
