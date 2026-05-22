@@ -1,7 +1,12 @@
 const URL =
-// prod
+
+//prod joo
+
+"https://script.google.com/macros/s/AKfycbxrOhpr1Jc59xSs0vs9R_b7V4hf8OzwIHO_u7z03Sqg0_GjdwsOlHgnNvHLe1ODoKeJaw/exec"
+
+// prod pk
 "https://script.google.com/macros/s/AKfycby3uiB0b8EdhQdPncTZypaZJeN7bt8SCLvjBfafqKpNm3uLMck-t2o1y6aFSlzNYMAT/exec"
-// dev
+// dev pk
 // "/api/macros/s/AKfycby3uiB0b8EdhQdPncTZypaZJeN7bt8SCLvjBfafqKpNm3uLMck-t2o1y6aFSlzNYMAT/exec"  
 
 async function request(data) {
