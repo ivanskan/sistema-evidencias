@@ -15,10 +15,6 @@ export default function UploadForm() {
   const [pdf, setPdf] =
     useState(null);
 
-    const [previewPdf,
-  setPreviewPdf] =
-    useState(null);
-
     const [omitirLista,
   setOmitirLista] =
     useState(false);
@@ -198,9 +194,9 @@ const [preview2,
         setPdf(null);
         setFoto1(null);
         setFoto2(null);
-        setPreviewPdf(null);
         setPreview1(null);
         setPreview2(null);
+        setOmitirLista(false);
 
         document.getElementById(
           "pdf"
@@ -244,6 +240,57 @@ const [preview2,
   }
 
   return (
+    <>
+  {
+    loading && (
+
+      <div
+        className="
+          position-fixed
+          top-0
+          start-0
+          w-100
+          h-100
+          d-flex
+          justify-content-center
+          align-items-center
+        "
+        style={{
+          background:
+            "rgba(0,0,0,0.35)",
+
+          zIndex: 2000,
+
+          backdropFilter:
+            "blur(2px)",
+        }}
+      >
+
+        <div className="
+          bg-white
+          rounded
+          shadow
+          p-4
+          text-center
+        ">
+
+          <div className="
+            spinner-border
+            text-primary
+            mb-3
+          " />
+
+          <div className="
+            fw-semibold
+          ">
+            {mensaje}
+          </div>
+
+        </div>
+
+      </div>
+    )
+  }
 
     <div className="card shadow p-4">
 
@@ -253,77 +300,42 @@ const [preview2,
 
       <form onSubmit={handleSubmit}>
 
-        <label className="fw-semibold mb-2">Fecha</label>
+        <label className="fw-semibold mb-2"htmlFor="fecha">Fecha</label>
 
         <input id="fecha" type="date" className="form-control mb-3" value={fecha}
           onChange={(e) => setFecha( e.target.value)} />
 
-        <label className="fw-semibold mb-2">Curso</label>
+        <label className="fw-semibold mb-2" htmlFor="curso">Curso</label>
 
-          <input
-          id="curso"
-  list="lista-cursos"
-  className="
-    form-control
-    mb-3
-  "
-  placeholder="Curso"
-  value={curso}
-  onChange={(e) =>
-    setCurso(
-      e.target.value.toUpperCase()
-    )
-  }
-/>
+          <input id="curso" list="lista-cursos" className="form-control mb-3"
+            value={curso}
+            onChange={(e) => setCurso(e.target.value.toUpperCase())}/>
 
-<datalist id="lista-cursos">
-
-  {
-    cursos.map(
-      (item) => (
-
-        <option
-          key={item}
-          value={item}
-        />
-      )
-    )
-  }
-
-</datalist>
+          <datalist id="lista-cursos">
+            {
+              cursos.map((item) => (
+                <option
+                  key={item}
+                  value={item}
+                />
+              ))
+            }
+          </datalist>
 
         
-        <label className="fw-semibold mb-2" id="lista">Lista</label>
-        <input 
-          id="pdf" 
-          type="file" accept=".pdf" 
-          className="form-control mb-3" 
-          disabled={omitirLista}
-          // onChange={(e) => setPdf(e.target.files[0])}
-          onChange={(e) => {
+        <label className="fw-semibold mb-2" htmlFor="pdf" id="lista">Lista</label>
 
-  const file =
-    e.target.files[0];
+        <input id="pdf" type="file" accept=".pdf" className="form-control mb-3" disabled={omitirLista}
+          onChange={(e) => {const file = e.target.files[0];
+            if (!file) {
+              setPdf(null);
+              return;
+            }
+            setPdf(file);
+          }}
+        />
 
-  if (!file) {
-
-    setPdf(null);
-
-    setPreviewPdf(null);
-
-    return;
-  }
-
-  setPdf(file);
-
-  setPreviewPdf(
-    URL.createObjectURL(file)
-  );
-}}
-          />
-
-        <div className="d-flex align-items-center justify-content-between mb-2">
-          <div className="form-check">
+          <div className="form-check mb-3">
             <input
               id="omitirLista"
               className="form-check-input" 
@@ -332,42 +344,18 @@ const [preview2,
               onChange={(e) => {setOmitirLista(e.target.checked);
                   if ( e.target.checked ) {
                     setPdf(null);
-                    setPreviewPdf(null);
                     document.getElementById("pdf").value = "";
                   }
                 }} 
             />
             <label
-              className="form-check-label text-danger fw-semibold">
+              className="form-check-label text-danger fw-semibold mb-2" htmlFor="omitirLista">
                 Omitir lista ☠
             </label>
           </div>
-          {
-            previewPdf && (
+      
 
-              <button
-                type="button"
-                className="
-                  ms-3
-                  btn
-                  btn-sm
-                  text-primary
-                  fw-semibold
-                "
-                onClick={() =>
-                  window.open(
-                    previewPdf,
-                    "_blank"
-                  )
-                }
-              >
-                Ver pdf 👁
-              </button>
-            )
-          }
-        </div>
-
-        <label className="fw-semibold mb-2">Evidencia 1</label>
+        <label className="fw-semibold mb-2" htmlFor="foto1">Evidencia 1</label>
 
         <input id="foto1" type="file" accept="image/*" className="form-control mb-3"
           onChange={(e) => { const file = e.target.files[0];
@@ -437,7 +425,7 @@ const [preview2,
 
 </div>
 
-        <label className="fw-semibold mb-2"> Evidencia 2 </label>
+        <label className="fw-semibold mb-2" htmlFor="foto2"> Evidencia 2 </label>
 
         <input id="foto2" type="file" accept="image/*" className="form-control mb-3"
           onChange={(e) => {const file = e.target.files[0];
@@ -509,37 +497,20 @@ const [preview2,
 
 </div>
 
-        <button
-          disabled={loading}
-          className="
-            btn
-            btn-primary
-            w-100
-          "
-        >
-
-          {
-            loading
-              ? (
-                <>
-                  <span
-                    className="
-                      spinner-border
-                      spinner-border-sm
-                      me-2
-                    "
-                  />
-
-                  {mensaje}
-                </>
-              )
-              : "Enviar evidencia"
-          }
-
-        </button>
+       <button
+  className="
+    btn
+    btn-primary
+    w-100
+  "
+>
+  Enviar evidencia
+</button>
 
       </form>
 
     </div>
+
+    </>
   );
 }

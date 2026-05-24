@@ -1,27 +1,34 @@
-import {
-  useEffect,
-  useState
-} from "react";
-
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-
-import {
-  listar,
-  eliminar
-} from "../services/api";
+import { listar, eliminar} from "../services/api";
 
 export default function MisEvidencias() {
 
-  const [data, setData] =
-    useState([]);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [pagina, setPagina] =  useState(1);
+  const POR_PAGINA = 10;
+  const [eliminandoId, setEliminandoId] = useState(null);
+  const usuario = localStorage.getItem("usuario");
 
-  const [loading, setLoading] =
-    useState(true);
+  const inicio =
+    (pagina - 1) *
+    POR_PAGINA;
 
-  const usuario =
-    localStorage.getItem(
-      "usuario"
+  const fin =
+    inicio + POR_PAGINA;
+
+  const dataPaginada =
+    data.slice(
+      inicio,
+      fin
     );
+
+  const totalPaginas =
+    Math.ceil(
+      data.length /
+      POR_PAGINA
+  );
 
   async function cargar() {
 
@@ -32,7 +39,16 @@ export default function MisEvidencias() {
       const resp =
         await listar(usuario);
 
-      setData(resp);
+      const ordenado =
+        resp.sort((a, b) => {
+
+          return (
+            new Date(b.fecha) -
+            new Date(a.fecha)
+          );
+        });
+
+      setData(ordenado);
 
     } catch (error) {
 
@@ -58,22 +74,12 @@ export default function MisEvidencias() {
 
     const result =
       await Swal.fire({
-
-        title:
-          "¿Eliminar evidencia?",
-
-        text:
-          "Esta acción no se puede deshacer",
-
+        title: "¿Eliminar evidencia?",
+        text: "Esta acción no se puede deshacer",
         icon: "warning",
-
         showCancelButton: true,
-
-        confirmButtonText:
-          "Sí, eliminar",
-
-        cancelButtonText:
-          "Cancelar",
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar",
       });
 
     if (!result.isConfirmed)
@@ -81,8 +87,9 @@ export default function MisEvidencias() {
 
     try {
 
-      const resp =
-        await eliminar(id);
+      setEliminandoId(id);
+
+      const resp = await eliminar(id);
 
       if (resp.success) {
 
@@ -105,6 +112,10 @@ export default function MisEvidencias() {
         "error"
       );
     }
+    finally {
+
+  setEliminandoId(null);
+}
   }
 
   if (loading) {
@@ -211,7 +222,7 @@ export default function MisEvidencias() {
                 <tbody>
 
                   {
-                    data.map(item => (
+                    dataPaginada.map(item => (
 
                       <tr key={item.id}>
 
@@ -299,13 +310,32 @@ export default function MisEvidencias() {
                               btn-sm
                               btn-danger
                             "
+                            disabled={
+  eliminandoId === item.id
+}
                             onClick={() =>
                               handleEliminar(
                                 item.id
                               )
                             }
                           >
-                            Eliminar
+                            {
+  eliminandoId === item.id
+    ? (
+      <>
+        <span
+          className="
+            spinner-border
+            spinner-border-sm
+            me-2
+          "
+        />
+
+        Eliminando
+      </>
+    )
+    : "Eliminar"
+}
                           </button>
 
                         </td>
@@ -317,7 +347,56 @@ export default function MisEvidencias() {
                 </tbody>
 
               </table>
+<div className="
+  d-flex
+  justify-content-center
+  align-items-center
+  gap-2
+  mt-3
+">
 
+  <button
+    className="
+      btn
+      btn-sm
+      btn-outline-secondary
+    "
+    disabled={pagina === 1}
+    onClick={() =>
+      setPagina(
+        pagina - 1
+      )
+    }
+  >
+    ←
+  </button>
+
+  <span className="
+    small
+    text-muted
+  ">
+    Página {pagina} de {totalPaginas}
+  </span>
+
+  <button
+    className="
+      btn
+      btn-sm
+      btn-outline-secondary
+    "
+    disabled={
+      pagina === totalPaginas
+    }
+    onClick={() =>
+      setPagina(
+        pagina + 1
+      )
+    }
+  >
+    →
+  </button>
+
+</div>
             </div>
           )
         }
