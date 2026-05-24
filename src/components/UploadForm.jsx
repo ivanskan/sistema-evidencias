@@ -253,12 +253,12 @@ const [preview2,
 
       <form onSubmit={handleSubmit}>
 
-        <label className="fw-semibold mb-2" htmlFor="fecha">Fecha</label>
+        <label className="fw-semibold mb-2">Fecha</label>
 
         <input id="fecha" type="date" className="form-control mb-3" value={fecha}
           onChange={(e) => setFecha( e.target.value)} />
 
-        <label className="fw-semibold mb-2" htmlFor="curso">Curso</label>
+        <label className="fw-semibold mb-2">Curso</label>
 
           <input
           id="curso"
@@ -293,7 +293,7 @@ const [preview2,
 </datalist>
 
         
-        <label className="fw-semibold mb-2" htmlFor="pdf" id="lista">Lista</label>
+        <label className="fw-semibold mb-2" id="lista">Lista</label>
         <input 
           id="pdf" 
           type="file" accept=".pdf" 
@@ -322,7 +322,7 @@ const [preview2,
 }}
           />
 
-        <div className="d-flex align-items-center mb-2">
+        <div className="d-flex align-items-center justify-content-between mb-2">
           <div className="form-check">
             <input
               id="omitirLista"
@@ -338,8 +338,7 @@ const [preview2,
                 }} 
             />
             <label
-              className="form-check-label text-danger fw-semibold" 
-              htmlFor="omitirLista">
+              className="form-check-label text-danger fw-semibold">
                 Omitir lista ☠
             </label>
           </div>
@@ -368,7 +367,7 @@ const [preview2,
           }
         </div>
 
-        <label className="fw-semibold mb-2" htmlFor="foto1">Evidencia 1</label>
+        <label className="fw-semibold mb-2">Evidencia 1</label>
 
         <input id="foto1" type="file" accept="image/*" className="form-control mb-3"
           onChange={(e) => { const file = e.target.files[0];
@@ -438,7 +437,7 @@ const [preview2,
 
 </div>
 
-        <label className="fw-semibold mb-2" htmlFor="foto2"> Evidencia 2 </label>
+        <label className="fw-semibold mb-2"> Evidencia 2 </label>
 
         <input id="foto2" type="file" accept="image/*" className="form-control mb-3"
           onChange={(e) => {const file = e.target.files[0];
