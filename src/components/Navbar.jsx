@@ -80,7 +80,6 @@ export default function Navbar({
           className="
             navbar-toggler
             border-0
-            pe-0
           "
           type="button"
           onClick={() =>
