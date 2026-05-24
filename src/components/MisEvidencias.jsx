@@ -235,18 +235,31 @@ export default function MisEvidencias() {
 
                         <td>
 
-                          <a
-                            href={item.pdf}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="
-                              text-primary
-                            "
-                          >
-                            Ver
-                          </a>
+  {
+    item.pdf ? (
 
-                        </td>
+      <a
+        href={item.pdf}
+        target="_blank"
+        rel="noreferrer"
+        className="
+          text-primary
+        "
+      >
+        Ver
+      </a>
+
+    ) : (
+
+      <span className="
+        text-muted
+      ">
+        Omitido
+      </span>
+    )
+  }
+
+</td>
 
                         <td>
 

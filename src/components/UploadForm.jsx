@@ -15,6 +15,14 @@ export default function UploadForm() {
   const [pdf, setPdf] =
     useState(null);
 
+    const [previewPdf,
+  setPreviewPdf] =
+    useState(null);
+
+    const [omitirLista,
+  setOmitirLista] =
+    useState(false);
+
   const [foto1, setFoto1] =
     useState(null);
 
@@ -34,6 +42,7 @@ const [preview2,
 
   const [mensaje, setMensaje] =
     useState("");
+    
 
   const usuario =
     localStorage.getItem(
@@ -89,13 +98,17 @@ const [preview2,
 
     e.preventDefault();
 
-    if (
+      if (
       !fecha ||
       !curso ||
-      !pdf ||
+      (
+        !omitirLista &&
+        !pdf
+      ) ||
       !foto1 ||
       !foto2
-    ) {
+    )
+    {
 
       Swal.fire(
         "Error",
@@ -128,18 +141,23 @@ const [preview2,
         "Procesando archivos..."
       );
 
-      const [
-        pdf64,
+     const [
         foto164,
         foto264
       ] = await Promise.all([
-
-        toBase64(pdf),
 
         toBase64(compressed1),
 
         toBase64(compressed2),
       ]);
+
+      let pdf64 = null;
+
+      if (pdf) {
+
+        pdf64 =
+          await toBase64(pdf);
+      }
 
       setMensaje(
         "Subiendo evidencias..."
@@ -160,7 +178,7 @@ const [preview2,
 
           foto2: foto264,
 
-          pdfName: pdf.name,
+          pdfName: pdf  ? pdf.name : "",
 
           foto1Name: foto1.name,
 
@@ -180,9 +198,9 @@ const [preview2,
         setPdf(null);
         setFoto1(null);
         setFoto2(null);
+        setPreviewPdf(null);
         setPreview1(null);
-
-setPreview2(null);
+        setPreview2(null);
 
         document.getElementById(
           "pdf"
@@ -276,8 +294,79 @@ setPreview2(null);
 
         
         <label className="fw-semibold mb-2" htmlFor="pdf" id="lista">Lista</label>
-        <input id="pdf" type="file" accept=".pdf" className="form-control mb-3"
-          onChange={(e) => setPdf(e.target.files[0])}/>
+        <input 
+          id="pdf" 
+          type="file" accept=".pdf" 
+          className="form-control mb-3" 
+          disabled={omitirLista}
+          // onChange={(e) => setPdf(e.target.files[0])}
+          onChange={(e) => {
+
+  const file =
+    e.target.files[0];
+
+  if (!file) {
+
+    setPdf(null);
+
+    setPreviewPdf(null);
+
+    return;
+  }
+
+  setPdf(file);
+
+  setPreviewPdf(
+    URL.createObjectURL(file)
+  );
+}}
+          />
+
+        <div className="d-flex align-items-center mb-2">
+          <div className="form-check">
+            <input
+              id="omitirLista"
+              className="form-check-input" 
+              type="checkbox" 
+              checked={omitirLista} 
+              onChange={(e) => {setOmitirLista(e.target.checked);
+                  if ( e.target.checked ) {
+                    setPdf(null);
+                    setPreviewPdf(null);
+                    document.getElementById("pdf").value = "";
+                  }
+                }} 
+            />
+            <label
+              className="form-check-label text-danger fw-semibold" 
+              htmlFor="omitirLista">
+                Omitir lista ☠
+            </label>
+          </div>
+          {
+            previewPdf && (
+
+              <button
+                type="button"
+                className="
+                  ms-3
+                  btn
+                  btn-sm
+                  text-primary
+                  fw-semibold
+                "
+                onClick={() =>
+                  window.open(
+                    previewPdf,
+                    "_blank"
+                  )
+                }
+              >
+                Ver pdf 👁
+              </button>
+            )
+          }
+        </div>
 
         <label className="fw-semibold mb-2" htmlFor="foto1">Evidencia 1</label>
 
