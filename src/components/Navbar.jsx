@@ -14,6 +14,14 @@ export default function Navbar({
   cerrarSesion
 }) {
 
+  const usuario =
+  localStorage.getItem(
+    "usuario"
+  );
+
+  const isAdmin =
+  usuario === "admin";
+
   const [menuOpen,
     setMenuOpen] =
       useState(false);
@@ -128,7 +136,9 @@ export default function Navbar({
             pt-1
             pt-lg-0
           ">
-
+{
+  !isAdmin && (
+    <>
             {/* SUBIR */}
 
             <li className="
@@ -184,7 +194,9 @@ export default function Navbar({
               </a>
 
             </li>
-
+</>
+  )
+}
             {/* LOGOUT */}
 
             <li className="

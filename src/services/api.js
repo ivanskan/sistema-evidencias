@@ -49,6 +49,13 @@ export async function listar(usuario) {
   });
 }
 
+export async function listarTodas() {
+
+  return request({
+    action: "listAll",
+  });
+}
+
 export async function eliminar(id) {
   return request({
     action: "delete",

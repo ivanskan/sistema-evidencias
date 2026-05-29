@@ -8,6 +8,9 @@ import {
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 
+/* NUEVO */
+import Admin from "./pages/Admin";
+
 export default function App() {
 
   const usuario =
@@ -25,12 +28,16 @@ export default function App() {
           path="/"
           element={
 
-            usuario
-              ? (
-                <Navigate
-                  to="/dashboard"
-                />
-              )
+          usuario
+  ? (
+    <Navigate
+      to={
+        usuario === "admin"
+          ? "/admin"
+          : "/dashboard"
+      }
+    />
+  )
               : <Login />
           }
         />
@@ -42,6 +49,22 @@ export default function App() {
             usuario
               ? (
                 <Dashboard />
+              )
+              : (
+                <Navigate to="/" />
+              )
+          }
+        />
+
+        {/* NUEVA RUTA ADMIN */}
+
+        <Route
+          path="/admin"
+          element={
+
+            usuario === "admin"
+              ? (
+                <Admin />
               )
               : (
                 <Navigate to="/" />

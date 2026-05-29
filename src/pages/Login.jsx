@@ -83,7 +83,9 @@ const [showPassword,
     });
 
     window.location.href =
-      "/dashboard";
+  resp.usuario === "admin"
+    ? "/admin"
+    : "/dashboard";
 
   } else {
 
@@ -107,49 +109,6 @@ const [showPassword,
   setLoading(false);
 }
 
- if (resp.success) {
-
-  localStorage.setItem(
-  "usuario",
-  resp.usuario
-);
-
-localStorage.setItem(
-  "nombre",
-  resp.nombre
-);
-
-  const Toast =
-    Swal.mixin({
-
-      toast: true,
-
-      position: "top-end",
-
-      showConfirmButton: false,
-
-      timer: 1200,
-
-      timerProgressBar: true,
-    });
-
-  await Toast.fire({
-
-    icon: "success",
-
-    title: "Bienvenido",
-  });
-
-  window.location.href = "/dashboard";
-
-  } else {
-
-    Swal.fire(
-      "Error",
-      "Credenciales inválidas",
-      "error"
-    );
-  }
 }
 
   return (
