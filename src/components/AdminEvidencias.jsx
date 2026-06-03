@@ -66,6 +66,35 @@ export default function AdminEvidencias() {
 
   }, []);
 
+  const renderUsuario = (usuario) => {
+  switch (usuario) {
+    case 'lnl':
+      return 'Luisa Narro';
+    case 'hec':
+      return 'Hernan Espinoza';
+    case 'oqc':
+      return 'Oswaldo Quiroga';
+    case 'edm':
+      return 'Edwin Díaz';
+    case 'joo':
+      return 'Jorge Ortiz';
+    case 'jpc':
+      return 'Jorge Panta';
+    case 'adr':
+      return 'Antonio Saldaña';
+    case 'mct':
+      return 'Manuel Correa';
+    case 'dda':
+      return 'David Díaz';
+    case 'wap':
+      return 'Walter Alvarez';
+    case 'lmf':
+      return 'Leonardo moreno';
+    default:
+      return 'undefined';
+  }
+};
+
   if (loading) {
 
     return (
@@ -145,7 +174,7 @@ export default function AdminEvidencias() {
             d-flex
             justify-content-between
             align-items-center
-            mb-4
+            mb-3
           ">
 
             <h4 className="mb-0">
@@ -172,75 +201,38 @@ export default function AdminEvidencias() {
               align-middle
             ">
 
-              <thead className="
-                table-dark
-              ">
-
+              <thead className="table-dark">
                 <tr>
-
-                  <th>
-                    Fecha
-                  </th>
-
-                  <th>
-                    Usuario
-                  </th>
-
-                  <th>
-                    Curso
-                  </th>
-
-                  <th>
-                    Lista
-                  </th>
-
-                  <th>
-                    Img 1
-                  </th>
-
-                  <th>
-                    Img 2
-                  </th>
-
-                  <th>
-                    Acciones
-                  </th>
-
+                  <th>Fecha</th>
+                  <th>Instructor</th>
+                  <th>Curso</th>
+                  <th>Lista</th>
+                  <th>Img&nbsp;1</th>
+                  <th>Img&nbsp;2</th>
+                  <th>Acciones</th>
                 </tr>
-
               </thead>
 
               <tbody>
 
                 {
                   data.map(item => (
-
                     <tr key={item.id}>
-
                       <td>
-
                         {
                           new Date(item.fecha)
                             .toLocaleDateString(
                               "es-PE"
                             )
                         }
-
                       </td>
 
+                      {/* <td>{item.usuario}</td> */}
+                      <td>{renderUsuario(item.usuario)}</td>
+                      <td>{item.curso}</td>
                       <td>
-                        {item.usuario}
-                      </td>
-
-                      <td>
-                        {item.curso}
-                      </td>
-
-                      <td>
-
                         {
                           item.pdf ? (
-
                             <a
                               href={item.pdf}
                               target="_blank"
@@ -248,9 +240,7 @@ export default function AdminEvidencias() {
                             >
                               Ver
                             </a>
-
                           ) : (
-
                             <span className="
                               text-muted
                             ">

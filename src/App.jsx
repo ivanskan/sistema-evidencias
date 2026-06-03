@@ -7,16 +7,12 @@ import {
 
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-
-/* NUEVO */
 import Admin from "./pages/Admin";
+import Enlaces from "./pages/Enlaces";
 
 export default function App() {
 
-  const usuario =
-    localStorage.getItem(
-      "usuario"
-    );
+  const usuario = localStorage.getItem("usuario");
 
   return (
 
@@ -56,7 +52,19 @@ export default function App() {
           }
         />
 
-        {/* NUEVA RUTA ADMIN */}
+  <Route
+          path="/enlaces"
+          element={
+
+            usuario
+              ? (
+                <Enlaces />
+              )
+              : (
+                <Navigate to="/" />
+              )
+          }
+        />
 
         <Route
           path="/admin"
@@ -71,6 +79,7 @@ export default function App() {
               )
           }
         />
+        
 
       </Routes>
 

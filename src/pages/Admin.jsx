@@ -53,8 +53,6 @@ export default function Admin() {
             text-muted
           ">
 
-            Bienvenido:
-
             <strong className="
               ms-2
             ">
