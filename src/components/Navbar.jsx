@@ -1,41 +1,38 @@
+import { useState } from "react";
+
 import {
-  useState
-} from "react";
+  Link,
+  NavLink
+} from "react-router-dom";
 
 import logoDesktop
   from "../assets/ERS-logo.png";
 
 export default function Navbar({
 
-  vista,
-
-  setVista,
-
   cerrarSesion
+
 }) {
 
   const usuario =
-  localStorage.getItem(
-    "usuario"
-  );
+    localStorage.getItem(
+      "usuario"
+    );
 
   const isAdmin =
-  usuario === "admin";
+    usuario === "admin";
 
   const [menuOpen,
     setMenuOpen] =
       useState(false);
 
-  function cambiarVista(
-    nuevaVista
-  ) {
-
-    setVista(
-      nuevaVista
+      const [darkMode,
+  setDarkMode] =
+    useState(
+      localStorage.getItem(
+        "theme"
+      ) === "dark"
     );
-
-    setMenuOpen(false);
-  }
 
   function salir() {
 
@@ -44,28 +41,95 @@ export default function Navbar({
     cerrarSesion();
   }
 
+ function toggleDarkMode() {
+
+  const nuevoModo =
+    darkMode
+      ? "light"
+      : "dark";
+
+  document.documentElement
+    .setAttribute(
+      "data-bs-theme",
+      nuevoModo
+    );
+
+  localStorage.setItem(
+    "theme",
+    nuevoModo
+  );
+
+  setDarkMode(
+    !darkMode
+  );
+
+  setMenuOpen(false);
+}
+
+function getNavClass(
+  isActive
+) {
+
+  return `
+    nav-link
+    border-0
+    bg-transparent
+    w-100
+    text-end
+    fw-bold
+    ${
+      isActive
+        ? "text-primary"
+        : ""
+    }
+  `;
+}
+
+const navClass = ({
+  isActive
+}) =>
+  `
+    nav-link
+    border-0
+    bg-transparent
+    w-100
+    text-end
+    fw-bold
+    ${
+      isActive
+        ? "text-primary"
+        : ""
+    }
+  `;
+
   return (
 
-    <nav className="
-      navbar
-      navbar-expand-lg
-      shadow-sm
-    "
-    // style={{backgroundColor:"#e3f2fd"}}
+    <nav
+      className="
+        navbar
+        navbar-expand-lg
+        shadow-sm
+      "
     >
 
-      <div className="
-        container
-      ">
+      <div className="container">
 
         {/* LOGO */}
 
-        <a
-          className="
-            navbar-brand btn px-0
-          "
-          href="#"
-        >
+     <Link
+        to={
+          isAdmin
+            ? "/admin"
+            : "/dashboard"
+        }
+        className="
+          navbar-brand
+          px-0
+        "
+        onClick={() =>
+          setMenuOpen(false)
+        }
+      >
 
           <img
             src={logoDesktop}
@@ -73,14 +137,9 @@ export default function Navbar({
             style={{
               height: "42px",
             }}
-            onClick={() =>
-                  cambiarVista(
-                    "subir"
-                  )
-                }
           />
 
-        </a>
+        </Link>
 
         {/* BTN MOBILE */}
 
@@ -97,20 +156,20 @@ export default function Navbar({
           }
         >
 
-          <span
-            style={{
-              fontSize: "1.5rem",
-              color: "black",
-            }}
-          >
-
-            {
-              menuOpen
-                ? "✕"
-                : "☰"
-            }
-
-          </span>
+       <span
+  style={{
+    fontSize: "1.5rem",
+    color: darkMode
+      ? "white"
+      : "black",
+  }}
+>
+  {
+    menuOpen
+      ? "✕"
+      : "☰"
+  }
+</span>
 
         </button>
 
@@ -128,96 +187,162 @@ export default function Navbar({
           `}
         >
 
-          <ul className="
-            navbar-nav
-            ms-auto
-            text-end
-            gap-lg-1
-            pt-1
-            pt-lg-0
-          ">
-{
-  !isAdmin && (
-    <>
-            {/* SUBIR */}
+          <ul
+            className="
+              navbar-nav
+              ms-auto
+              text-end
+              gap-lg-1
+              pt-1
+              pt-lg-0
+            "
+          >
 
-            <li className="
-              nav-item
-              py-1
-              btn
-            ">
+            {
+              !isAdmin && (
 
-              <a
-                className={`
-                  nav-link
-                  border-0
-                  bg-transparent
-                  w-100
-                  text-end
-                 fw-bold
-                 hover-primary
-                `}
+                <>
+
+                <li
+                  className="
+                    nav-item
+                    btn
+                  "
+                >
+
+                  <NavLink
+                    to="/dashboard"
+                    className={navClass}
+                    onClick={() =>
+                      setMenuOpen(false)
+                    }
+                  >
+                    Inicio
+                  </NavLink>
+
+                </li>
+
+                  {/* SUBIR */}
+
+                  <li
+                    className="
+                      nav-item
+                      py-1
+                      btn
+                    "
+                  >
+
+                <NavLink
+                  to="/subir"
+                  className={navClass}
+                  onClick={() =>
+                    setMenuOpen(false)
+                  }
+                >
+                  Subir Evidencias
+                </NavLink>
+
+                  </li>
+
+                  {/* MIS EVIDENCIAS */}
+
+                  <li
+                    className="
+                      nav-item
+                      btn
+                    "
+                  >
+                  <NavLink
+                    to="/mis-evidencias"
+                    className={navClass}
+                    onClick={() =>
+                      setMenuOpen(false)
+                    }
+                  >
+                    Mis Evidencias
+                  </NavLink>
+
+                  </li>
+
+                </>
+
+              )
+            }
+
+            {/* ENLACES */}
+
+            <li
+              className="
+                nav-item
+                btn
+              "
+            >
+
+            <NavLink
+                to="/enlaces"
+                className={navClass}
                 onClick={() =>
-                  cambiarVista(
-                    "subir"
-                  )
+                  setMenuOpen(false)
                 }
               >
-                Subir Evidencias
-              </a>
+                Enlaces
+          </NavLink>
 
             </li>
+            <li
+  className="
+    nav-item
+    btn
+  "
+>
 
-            {/* MIS */}
+  <button
+    className="
+      nav-link
+      border-0
+      bg-transparent
+      w-100
+      text-end
+      fw-bold
+    "
+    onClick={
+      toggleDarkMode
+    }
+  >
 
-            <li className="
-              nav-item
-              btn
-            ">
+    {
+      darkMode
+        ? "☀️ Modo Claro"
+        : "🌙 Modo Oscuro"
+    }
 
-              <a
-                className={`
-                  nav-link
-                  border-0
-                  bg-transparent
-                  w-100
-                  text-end
-                  fw-bold    
-                `}
-                onClick={() =>
-                  cambiarVista(
-                    "mis-evidencias"
-                  )
-                }
-              >
-                Mis Evidencias
-              </a>
+  </button>
 
-            </li>
-</>
-  )
-}
+</li>
+
             {/* LOGOUT */}
 
-            <li className="
-              nav-item
-              btn
-            ">
+            <li
+              className="
+                nav-item
+                btn
+              "
+            >
 
-              <a
-                className="
-                  nav-link
-                  border-0
-                  bg-transparent
-                  text-danger
-                  w-100
-                  text-end
-                  fw-bold
-                "
-                onClick={salir}
-              >
-                Cerrar sesión
-              </a>
+             <button
+  className="
+    nav-link
+    border-0
+    bg-transparent
+    text-danger
+    w-100
+    text-end
+    fw-bold
+  "
+  onClick={salir}
+>
+  Cerrar sesión
+</button>
 
             </li>
 

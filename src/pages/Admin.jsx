@@ -3,6 +3,8 @@ import Navbar from "../components/Navbar";
 import AdminEvidencias
   from "../components/AdminEvidencias";
 
+  import Layout from "../components/Layout";
+
 export default function Admin() {
 
   const nombre =
@@ -10,63 +12,46 @@ export default function Admin() {
       "nombre"
     );
 
-  function cerrarSesion() {
-
-    localStorage.removeItem(
-      "usuario"
-    );
-
-    localStorage.removeItem(
-      "nombre"
-    );
-
-    window.location.href = "/";
-  }
-
   return (
+    <Layout>
 
-    <div>
-
-      <Navbar
-        admin={true}
-        cerrarSesion={
-          cerrarSesion
-        }
-      />
-
-      <div className="
-        container
-        py-4
-      ">
+      <div>
 
         <div className="
-          mb-4
+          container
+          py-4
         ">
 
-          <h3 className="
-            fw-bold
-          ">
-            Panel Administrador
-          </h3>
-
           <div className="
-            text-muted
+            mb-4
           ">
 
-            <strong className="
-              ms-2
+            <h3 className="
+              fw-bold
             ">
-              {nombre}
-            </strong>
+              Panel Administrador
+            </h3>
+
+            <div className="
+              text-muted
+            ">
+
+              <strong className="
+                ms-2
+              ">
+                {nombre}
+              </strong>
+
+            </div>
 
           </div>
 
-        </div>
+          <AdminEvidencias />
 
-        <AdminEvidencias />
+        </div>
 
       </div>
 
-    </div>
+    </Layout>
   );
 }
