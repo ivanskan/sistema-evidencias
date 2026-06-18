@@ -7,7 +7,7 @@ export default function MisEvidencias() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [pagina, setPagina] =  useState(1);
-  const POR_PAGINA = 10;
+  const POR_PAGINA = 20;
   const [eliminandoId, setEliminandoId] = useState(null);
   const usuario = localStorage.getItem("usuario");
 
@@ -265,7 +265,7 @@ export default function MisEvidencias() {
       <span className="
         text-muted
       ">
-        Omitido
+        
       </span>
     )
   }

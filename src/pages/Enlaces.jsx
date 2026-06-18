@@ -47,13 +47,15 @@ export default function Enlaces() {
  return (
 
   <Layout
-    title="Enlaces de Formularios"
+    
   >
 
+    <h4 className="mb-2 fw-bold">ENLACES DE EXAMENES</h4>  
+    <span className="text-danger"><i>*La encuesta es obligatorio para todos los cursos</i></span>
     <div >
 
       <SeccionCursos
-        titulo="CURSOS"
+        titulo="CURSOS GENERALES"
         data={enlacesData}
         qr={qrEncuesta}
         abierto={abierto}

@@ -33,6 +33,11 @@ export default function AdminEvidencias() {
     setCooldown] =
       useState(false);
 
+    const [pagina, setPagina] =
+  useState(1);
+
+const POR_PAGINA = 50;
+
   async function cargar() {
 
     try {
@@ -40,9 +45,16 @@ export default function AdminEvidencias() {
       setLoading(true);
 
       const resp =
-        await listarTodas();
+  await listarTodas();
 
-      setData(resp);
+const ordenado =
+  [...resp].sort(
+    (a, b) =>
+      new Date(b.fecha) -
+      new Date(a.fecha)
+  );
+
+setData(ordenado);
 
     } catch (error) {
 
@@ -89,11 +101,31 @@ export default function AdminEvidencias() {
     case 'wap':
       return 'Walter Alvarez';
     case 'lmf':
-      return 'Leonardo moreno';
+      return 'Leonardo Moreno';
     default:
       return 'undefined';
   }
 };
+
+const inicio =
+  (pagina - 1) *
+  POR_PAGINA;
+
+const fin =
+  inicio +
+  POR_PAGINA;
+
+const dataPaginada =
+  data.slice(
+    inicio,
+    fin
+  );
+
+const totalPaginas =
+  Math.ceil(
+    data.length /
+    POR_PAGINA
+  );
 
   if (loading) {
 
@@ -216,7 +248,7 @@ export default function AdminEvidencias() {
               <tbody>
 
                 {
-                  data.map(item => (
+                  dataPaginada.map(item => (
                     <tr key={item.id}>
                       <td>
                         {
@@ -244,7 +276,7 @@ export default function AdminEvidencias() {
                             <span className="
                               text-muted
                             ">
-                              Omitido
+                            
                             </span>
                           )
                         }
@@ -367,6 +399,61 @@ export default function AdminEvidencias() {
               </tbody>
 
             </table>
+
+            <div
+  className="
+    d-flex
+    justify-content-center
+    align-items-center
+    gap-2
+    mt-3
+  "
+>
+
+  <button
+    className="
+      btn
+      btn-sm
+      btn-outline-secondary
+    "
+    disabled={pagina === 1}
+    onClick={() =>
+      setPagina(
+        pagina - 1
+      )
+    }
+  >
+    ←
+  </button>
+
+  <span
+    className="
+      small
+      text-muted
+    "
+  >
+    Página {pagina} de {totalPaginas}
+  </span>
+
+  <button
+    className="
+      btn
+      btn-sm
+      btn-outline-secondary
+    "
+    disabled={
+      pagina === totalPaginas
+    }
+    onClick={() =>
+      setPagina(
+        pagina + 1
+      )
+    }
+  >
+    →
+  </button>
+
+</div>
 
           </div>
 
