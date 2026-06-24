@@ -1,8 +1,8 @@
 import { useState } from "react";
-
 import { Link, NavLink } from "react-router-dom";
 
 import logoDesktop  from "../assets/ERS-logo.png";
+import logoDesktopDark  from "../assets/ERS-logo-dark.png";
 
 export default function Navbar({  cerrarSesion}) {
   
@@ -58,7 +58,7 @@ export default function Navbar({  cerrarSesion}) {
           className="navbar-brand px-0"
           onClick={() => setMenuOpen(false)}>
 
-          <img src={logoDesktop} alt="ERS" style={{height: "42px" }}/>
+          <img src={darkMode? logoDesktopDark : logoDesktop} alt="ERS" style={{height: "42px" }}/>
 
         </Link>
 
