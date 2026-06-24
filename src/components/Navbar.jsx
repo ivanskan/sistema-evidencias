@@ -1,264 +1,117 @@
 import { useState } from "react";
 
-import {
-  Link,
-  NavLink
-} from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
-import logoDesktop
-  from "../assets/ERS-logo.png";
+import logoDesktop  from "../assets/ERS-logo.png";
 
-export default function Navbar({
+export default function Navbar({  cerrarSesion}) {
+  
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(localStorage.getItem( "theme") === "dark");
 
-  cerrarSesion
-
-}) {
-
-  const usuario =
-    localStorage.getItem(
-      "usuario"
-    );
-
-  const isAdmin =
-    usuario === "admin";
-
-  const [menuOpen,
-    setMenuOpen] =
-      useState(false);
-
-      const [darkMode,
-  setDarkMode] =
-    useState(
-      localStorage.getItem(
-        "theme"
-      ) === "dark"
-    );
+  const usuario = localStorage.getItem("usuario");
+  const isAdmin = usuario === "admin";
 
   function salir() {
 
     setMenuOpen(false);
-
     cerrarSesion();
   }
 
- function toggleDarkMode() {
+  function toggleDarkMode() {
 
-  const nuevoModo =
-    darkMode
-      ? "light"
-      : "dark";
+    const nuevoModo = darkMode ? "light" : "dark";
 
-  document.documentElement
-    .setAttribute(
-      "data-bs-theme",
-      nuevoModo
-    );
+    document.documentElement.setAttribute("data-bs-theme", nuevoModo);
 
-  localStorage.setItem(
-    "theme",
-    nuevoModo
-  );
+    localStorage.setItem("theme", nuevoModo);
 
-  setDarkMode(
-    !darkMode
-  );
+    setDarkMode(!darkMode);
+    setMenuOpen(false);
+  }
 
-  setMenuOpen(false);
-}
-
-function getNavClass(
-  isActive
-) {
-
-  return `
-    nav-link
-    border-0
-    bg-transparent
-    w-100
-    text-end
-    fw-bold
-    ${
-      isActive
-        ? "text-primary"
-        : ""
-    }
-  `;
-}
-
-const navClass = ({
-  isActive
-}) =>
-  `
-    nav-link
-    border-0
-    bg-transparent
-    w-100
-    text-end
-    fw-bold
-    ${
-      isActive
-        ? "text-primary"
-        : ""
-    }
-  `;
+  const navClass = ({ isActive}) =>
+    `
+      nav-link
+      border-0
+      bg-transparent
+      w-100
+      text-end
+      fw-bold
+      ${
+        isActive
+          ? "text-primary"
+          : ""
+      }
+    `;
 
   return (
 
-    <nav
-      className="
-        navbar
-        navbar-expand-lg
-        shadow-sm
-      "
-    >
+    <nav className="navbar navbar-expand-lg shadow-sm">
 
       <div className="container">
 
         {/* LOGO */}
 
-     <Link
-        to={
-          isAdmin
-            ? "/admin"
-            : "/dashboard"
-        }
-        className="
-          navbar-brand
-          px-0
-        "
-        onClick={() =>
-          setMenuOpen(false)
-        }
-      >
+        <Link
+          to={ isAdmin ? "/admin" : "/dashboard" }
+          className="navbar-brand px-0"
+          onClick={() => setMenuOpen(false)}>
 
-          <img
-            src={logoDesktop}
-            alt="ERS"
-            style={{
-              height: "42px",
-            }}
-          />
+          <img src={logoDesktop} alt="ERS" style={{height: "42px" }}/>
 
         </Link>
 
         {/* BTN MOBILE */}
 
-        <button
-          className="
-            navbar-toggler
-            border-0
-          "
-          type="button"
-          onClick={() =>
-            setMenuOpen(
-              !menuOpen
-            )
-          }
-        >
+        <button className="navbar-toggler border-0" type="button"
+          onClick={() => setMenuOpen(!menuOpen)}>
 
-       <span
-  style={{
-    fontSize: "1.5rem",
-    color: darkMode
-      ? "white"
-      : "black",
-  }}
->
-  {
-    menuOpen
-      ? "✕"
-      : "☰"
-  }
-</span>
+          <span style={{fontSize: "1.5rem", color: darkMode ? "white" : "black",}}>
+            { menuOpen ? "✕" : "☰" }
+          </span>
 
         </button>
 
         {/* MENU */}
 
-        <div
-          className={`
-            navbar-collapse
-            ${
-              menuOpen
-                ? "d-block"
-                : "d-none"
-            }
-            d-lg-flex
-          `}
-        >
+        <div className={`navbar-collapse ${menuOpen ? "d-block" : "d-none" } d-lg-flex`}>
 
-          <ul
-            className="
-              navbar-nav
-              ms-auto
-              text-end
-              gap-lg-1
-              pt-1
-              pt-lg-0
-            "
-          >
+          <ul className="navbar-nav ms-auto text-end gap-lg-1 pt-1 pt-lg-0">
 
             {
               !isAdmin && (
 
                 <>
 
-                <li
-                  className="
-                    nav-item
-                    btn
-                  "
-                >
+                <li className="nav-item btn">
 
                   <NavLink
                     to="/dashboard"
                     className={navClass}
-                    onClick={() =>
-                      setMenuOpen(false)
-                    }
-                  >
+                    onClick={() => setMenuOpen(false)}>
                     Inicio
                   </NavLink>
 
                 </li>
 
-                  {/* SUBIR */}
+                <li className="nav-item py-1 btn">
 
-                  <li
-                    className="
-                      nav-item
-                      py-1
-                      btn
-                    "
-                  >
+                  <NavLink
+                    to="/subir"
+                    className={navClass}
+                    onClick={() => setMenuOpen(false)}>
+                    Subir Evidencias
+                  </NavLink>
 
-                <NavLink
-                  to="/subir"
-                  className={navClass}
-                  onClick={() =>
-                    setMenuOpen(false)
-                  }
-                >
-                  Subir Evidencias
-                </NavLink>
+                </li>
 
-                  </li>
+                <li className="nav-item btn">
 
-                  {/* MIS EVIDENCIAS */}
-
-                  <li
-                    className="
-                      nav-item
-                      btn
-                    "
-                  >
                   <NavLink
                     to="/mis-evidencias"
                     className={navClass}
-                    onClick={() =>
-                      setMenuOpen(false)
-                    }
-                  >
+                    onClick={() => setMenuOpen(false)}>
                     Mis Evidencias
                   </NavLink>
 
@@ -269,80 +122,32 @@ const navClass = ({
               )
             }
 
-            {/* ENLACES */}
+            <li className="nav-item btn">
 
-            <li
-              className="
-                nav-item
-                btn
-              "
-            >
-
-            <NavLink
+              <NavLink
                 to="/enlaces"
                 className={navClass}
-                onClick={() =>
-                  setMenuOpen(false)
-                }
-              >
+                onClick={() => setMenuOpen(false)}>
                 Enlaces
-          </NavLink>
+              </NavLink>
 
             </li>
-            <li
-  className="
-    nav-item
-    btn
-  "
->
 
-  <button
-    className="
-      nav-link
-      border-0
-      bg-transparent
-      w-100
-      text-end
-      fw-bold
-    "
-    onClick={
-      toggleDarkMode
-    }
-  >
+            <li className="nav-item btn">
 
-    {
-      darkMode
-        ? "☀️ Modo Claro"
-        : "🌙 Modo Oscuro"
-    }
+              <button className="nav-link border-0 bg-transparent w-100 text-end fw-bold" onClick={toggleDarkMode}>
 
-  </button>
+                { darkMode ? "☀️ Modo Claro" : "🌙 Modo Oscuro" }
 
-</li>
+              </button>
 
-            {/* LOGOUT */}
+            </li>
 
-            <li
-              className="
-                nav-item
-                btn
-              "
-            >
+            <li className="nav-item btn">
 
-             <button
-  className="
-    nav-link
-    border-0
-    bg-transparent
-    text-danger
-    w-100
-    text-end
-    fw-bold
-  "
-  onClick={salir}
->
-  Cerrar sesión
-</button>
+              <button className="nav-link border-0 bg-transparent text-danger w-100 text-end fw-bold" onClick={salir}>
+                Cerrar sesión
+              </button>
 
             </li>
 
