@@ -46,52 +46,7 @@ const [preview2,
     );
 
 
-  // async function compressImage(file) {
-
-  //   const options = {
-
-  //     maxSizeMB: 0.15,
-
-  //     maxWidthOrHeight: 960,
-
-  //     useWebWorker: true,
-
-  //     fileType: "image/jpeg",
-
-  //     initialQuality: 0.6,
-  //   };
-
-  //   return await imageCompression(
-  //     file,
-  //     options
-  //   );
-  // }
- async function compressImage(file) {
-
-  try {
-
-    Swal.update({
-
-      html: `
-        <div class="text-start">
-
-          <b>${pasoActual}</b>
-
-          <hr>
-
-          <div>
-            <b>Archivo:</b><br>
-            ${file.name}
-          </div>
-
-          <div class="mt-2">
-            <b>Tamaño:</b><br>
-            ${(file.size / 1024 / 1024).toFixed(2)} MB
-          </div>
-
-        </div>
-      `
-    });
+  async function compressImage(file) {
 
     const options = {
 
@@ -110,18 +65,8 @@ const [preview2,
       file,
       options
     );
-
-  } catch (error) {
-
-    throw new Error(
-
-      error?.message ||
-
-      JSON.stringify(error)
-
-    );
   }
-}
+
 
   function toBase64(file) {
 
@@ -146,458 +91,156 @@ const [preview2,
     );
   }
 
-  // async function handleSubmit(e) {
-
-  //   e.preventDefault();
-
-  //     if (
-  //     !fecha ||
-  //     !curso ||
-  //     (
-  //       !omitirLista &&
-  //       !pdf
-  //     ) ||
-  //     !foto1 ||
-  //     !foto2
-  //   )
-  //   {
-
-  //     Swal.fire(
-  //       "Error",
-  //       "Todos los campos son obligatorios",
-  //       "error"
-  //     );
-
-  //     return;
-  //   }
-
-  //   try {
-
-  //     setLoading(true);
-
-  //     setMensaje(
-  //       "Comprimiendo imágenes..."
-  //     );
-
-  //     const [
-  //       compressed1,
-  //       compressed2
-  //     ] = await Promise.all([
-
-  //       compressImage(foto1),
-
-  //       compressImage(foto2),
-  //     ]);
-
-  //     setMensaje(
-  //       "Procesando archivos..."
-  //     );
-
-  //    const [
-  //       foto164,
-  //       foto264
-  //     ] = await Promise.all([
-
-  //       toBase64(compressed1),
-
-  //       toBase64(compressed2),
-  //     ]);
-
-  //     let pdf64 = null;
-
-  //     if (pdf) {
-
-  //       pdf64 =
-  //         await toBase64(pdf);
-  //     }
-
-  //     setMensaje(
-  //       "Subiendo evidencias..."
-  //     );
-
-  //     const resp =
-  //       await subirEvidencia({
-
-  //         fecha,
-
-  //         curso,
-
-  //         usuario,
-
-  //         pdf: pdf64,
-
-  //         foto1: foto164,
-
-  //         foto2: foto264,
-
-  //         pdfName: pdf  ? pdf.name : "",
-
-  //         foto1Name: foto1.name,
-
-  //         foto2Name: foto2.name,
-  //       });
-
-  //     if (resp.success) {
-
-  //       Swal.fire(
-  //         "Correcto",
-  //         "Archivos subidos",
-  //         "success"
-  //       );
-
-  //       setFecha("");
-  //       setCurso("");
-  //       setPdf(null);
-  //       setFoto1(null);
-  //       setFoto2(null);
-  //       setPreview1(null);
-  //       setPreview2(null);
-  //       setOmitirLista(false);
-
-  //       document.getElementById(
-  //         "pdf"
-  //       ).value = "";
-
-  //       document.getElementById(
-  //         "foto1"
-  //       ).value = "";
-
-  //       document.getElementById(
-  //         "foto2"
-  //       ).value = "";
-  //     }
-
-  //     else {
-
-  //       Swal.fire(
-  //         "Error",
-  //         resp.error ||
-  //           "Error al subir",
-  //         "error"
-  //       );
-  //     }
-
-  //   } catch (error) {
-
-  //     console.error(error);
-
-  //     Swal.fire(
-  //       "Error",
-  //       "Ocurrió un error",
-  //       "error"
-  //     );
-
-  //   } finally {
-
-  //     setLoading(false);
-
-  //     setMensaje("");
-  //   }
-  // }
-
   async function handleSubmit(e) {
 
-  e.preventDefault();
-
-  if (
-
-    !fecha ||
-
-    !curso ||
-
-    (
-
-      !omitirLista &&
-
-      !pdf
-
-    ) ||
-
-    !foto1 ||
-
-    !foto2
-
-  ) {
-
-    Swal.fire(
-      "Error",
-      "Todos los campos son obligatorios",
-      "error"
-    );
-
-    return;
-  }
-
-  let pasoActual = "";
-
-  try {
-
-    setLoading(true);
-
-    await Swal.fire({
-
-      title: "Procesando...",
-
-      html: "Iniciando...",
-
-      allowOutsideClick: false,
-
-      allowEscapeKey: false,
-
-      didOpen: () => {
-
-        Swal.showLoading();
-      }
-
-    });
-
-    pasoActual =
-      "📷 Comprimiendo Evidencia 1...";
-
-    const compressed1 =
-      await compressImage(foto1);
-
-    pasoActual =
-      "📷 Comprimiendo Evidencia 2...";
-
-    const compressed2 =
-      await compressImage(foto2);
-
-    pasoActual =
-      "🖼️ Preparando Evidencia 1...";
-
-    Swal.update({
-
-      html: `<b>${pasoActual}</b>`
-
-    });
-
-    const foto164 =
-      await toBase64(compressed1);
-
-    pasoActual =
-      "🖼️ Preparando Evidencia 2...";
-
-    Swal.update({
-
-      html: `<b>${pasoActual}</b>`
-
-    });
-
-    const foto264 =
-      await toBase64(compressed2);
-
-    let pdf64 = null;
-
-    if (pdf) {
-
-      pasoActual =
-        "📄 Preparando Lista de Asistencia...";
-
-      Swal.update({
-
-        html: `
-          <div class="text-start">
-
-            <b>${pasoActual}</b>
-
-            <hr>
-
-            <div>
-
-              <b>Archivo:</b><br>
-
-              ${pdf.name}
-
-            </div>
-
-            <div class="mt-2">
-
-              <b>Tamaño:</b><br>
-
-              ${(pdf.size / 1024 / 1024).toFixed(2)} MB
-
-            </div>
-
-          </div>
-        `
-      });
-
-      pdf64 =
-        await toBase64(pdf);
-    }
-
-    pasoActual =
-      "☁️ Subiendo evidencias al servidor...";
-
-    Swal.update({
-
-      html: `<b>${pasoActual}</b>`
-
-    });
-
-    const resp =
-      await subirEvidencia({
-
-        fecha,
-
-        curso,
-
-        usuario,
-
-        pdf: pdf64,
-
-        foto1: foto164,
-
-        foto2: foto264,
-
-        pdfName:
-          pdf
-            ? pdf.name
-            : "",
-
-        foto1Name:
-          foto1.name,
-
-        foto2Name:
-          foto2.name,
-      });
-
-    pasoActual =
-      "✅ Finalizando...";
-
-    Swal.update({
-
-      html: `<b>${pasoActual}</b>`
-
-    });
-
-    Swal.close();
-
-    if (resp.success) {
+    e.preventDefault();
+
+      if (
+      !fecha ||
+      !curso ||
+      (
+        !omitirLista &&
+        !pdf
+      ) ||
+      !foto1 ||
+      !foto2
+    )
+    {
 
       Swal.fire(
-
-        "Correcto",
-
-        "Archivos subidos",
-
-        "success"
-
-      );
-
-      setFecha("");
-
-      setCurso("");
-
-      setPdf(null);
-
-      setFoto1(null);
-
-      setFoto2(null);
-
-      setPreview1(null);
-
-      setPreview2(null);
-
-      setOmitirLista(false);
-
-      document.getElementById(
-        "pdf"
-      ).value = "";
-
-      document.getElementById(
-        "foto1"
-      ).value = "";
-
-      document.getElementById(
-        "foto2"
-      ).value = "";
-
-    } else {
-
-      Swal.fire(
-
         "Error",
-
-        resp.error ||
-
-        "Error al subir",
-
+        "Todos los campos son obligatorios",
         "error"
-
       );
+
+      return;
     }
 
-  } catch (error) {
+    try {
 
-    let detalle = "";
+      setLoading(true);
 
-    if (error instanceof Error) {
+      setMensaje(
+        "Comprimiendo imágenes..."
+      );
 
-      detalle =
-        error.message;
+      const [
+        compressed1,
+        compressed2
+      ] = await Promise.all([
 
-    } else {
+        compressImage(foto1),
 
-      try {
+        compressImage(foto2),
+      ]);
 
-        detalle =
-          JSON.stringify(
-            error,
-            null,
-            2
-          );
+      setMensaje(
+        "Procesando archivos..."
+      );
 
-      } catch {
+     const [
+        foto164,
+        foto264
+      ] = await Promise.all([
 
-        detalle =
-          String(error);
+        toBase64(compressed1),
+
+        toBase64(compressed2),
+      ]);
+
+      let pdf64 = null;
+
+      if (pdf) {
+
+        pdf64 =
+          await toBase64(pdf);
       }
+
+      setMensaje(
+        "Subiendo evidencias..."
+      );
+
+      const resp =
+        await subirEvidencia({
+
+          fecha,
+
+          curso,
+
+          usuario,
+
+          pdf: pdf64,
+
+          foto1: foto164,
+
+          foto2: foto264,
+
+          pdfName: pdf  ? pdf.name : "",
+
+          foto1Name: foto1.name,
+
+          foto2Name: foto2.name,
+        });
+
+      if (resp.success) {
+
+        Swal.fire(
+          "Correcto",
+          "Archivos subidos",
+          "success"
+        );
+
+        setFecha("");
+        setCurso("");
+        setPdf(null);
+        setFoto1(null);
+        setFoto2(null);
+        setPreview1(null);
+        setPreview2(null);
+        setOmitirLista(false);
+
+        document.getElementById(
+          "pdf"
+        ).value = "";
+
+        document.getElementById(
+          "foto1"
+        ).value = "";
+
+        document.getElementById(
+          "foto2"
+        ).value = "";
+      }
+
+      else {
+
+        Swal.fire(
+          "Error",
+          resp.error ||
+            "Error al subir",
+          "error"
+        );
+      }
+
+    } catch (error) {
+
+      console.error(error);
+
+      Swal.fire(
+        "Error",
+        "Ocurrió un error",
+        "error"
+      );
+
+    } finally {
+
+      setLoading(false);
+
+      setMensaje("");
     }
-
-    Swal.fire({
-
-      icon: "error",
-
-      title: "Error",
-
-      html: `
-
-        <div style="text-align:left">
-
-          <b>Paso donde ocurrió:</b>
-
-          <br><br>
-
-          ${pasoActual}
-
-          <br><br>
-
-          <b>Detalle:</b>
-
-          <pre style="
-            white-space:pre-wrap;
-            word-break:break-word;
-            margin-top:10px;
-          ">${detalle}</pre>
-
-        </div>
-
-      `,
-
-      width: 600
-
-    });
-
-  } finally {
-
-    setLoading(false);
-
-    setMensaje("");
-
   }
-}
+
+
 
   return (
     <>
