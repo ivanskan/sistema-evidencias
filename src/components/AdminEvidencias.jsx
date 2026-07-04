@@ -153,6 +153,8 @@ useEffect(() => {
       return 'Walter Alvarez';
     case 'lmf':
       return 'Leonardo Moreno';
+    case 'ccv':
+      return 'Cesar Cabrera';
     default:
       return 'undefined';
   }
