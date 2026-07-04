@@ -42,17 +42,58 @@ export async function subirEvidencia(data) {
   });
 }
 
-export async function listar(usuario) {
+// export async function listar(usuario) {
+//   return request({
+//     action: "list",
+//     usuario,
+//   });
+// }
+
+export async function listar(
+
+  usuario,
+
+  pagina = 1,
+
+  limite = 20
+
+) {
+
   return request({
+
     action: "list",
+
     usuario,
+
+    pagina,
+
+    limite,
+
   });
 }
+// export async function listarTodas() {
 
-export async function listarTodas() {
+//   return request({
+//     action: "listAll",
+//   });
+// }
+
+export async function listarTodas(
+
+  pagina = 1,
+
+  limite = 50
+
+) {
 
   return request({
+
     action: "listAll",
+
+    pagina,
+
+    limite,
+
   });
 }
 

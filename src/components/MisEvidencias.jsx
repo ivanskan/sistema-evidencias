@@ -11,64 +11,120 @@ export default function MisEvidencias() {
   const [eliminandoId, setEliminandoId] = useState(null);
   const usuario = localStorage.getItem("usuario");
 
-  const inicio =
-    (pagina - 1) *
-    POR_PAGINA;
+  const [total, setTotal] = useState(0);
 
-  const fin =
-    inicio + POR_PAGINA;
+  // const inicio =
+  //   (pagina - 1) *
+  //   POR_PAGINA;
 
-  const dataPaginada =
-    data.slice(
-      inicio,
-      fin
-    );
+  // const fin =
+  //   inicio + POR_PAGINA;
+
+  // const dataPaginada =
+  //   data.slice(
+  //     inicio,
+  //     fin
+  //   );
+
+  // const totalPaginas =
+  //   Math.ceil(
+  //     data.length /
+  //     POR_PAGINA
+  // );
 
   const totalPaginas =
-    Math.ceil(
-      data.length /
-      POR_PAGINA
+  Math.ceil(
+    total /
+    POR_PAGINA
   );
+
+  // async function cargar() {
+
+  //   try {
+
+  //     setLoading(true);
+
+  //     const resp =
+  //       await listar(usuario);
+
+  //     const ordenado =
+  //       resp.sort((a, b) => {
+
+  //         return (
+  //           new Date(b.fecha) -
+  //           new Date(a.fecha)
+  //         );
+  //       });
+
+  //     setData(ordenado);
+
+  //   } catch (error) {
+
+  //     console.error(error);
+
+  //     Swal.fire(
+  //       "Error",
+  //       "No se pudieron cargar las evidencias",
+  //       "error"
+  //     );
+
+  //   } finally {
+
+  //     setLoading(false);
+  //   }
+  // }
 
   async function cargar() {
 
-    try {
+  try {
 
-      setLoading(true);
+    setLoading(true);
 
-      const resp =
-        await listar(usuario);
-
-      const ordenado =
-        resp.sort((a, b) => {
-
-          return (
-            new Date(b.fecha) -
-            new Date(a.fecha)
-          );
-        });
-
-      setData(ordenado);
-
-    } catch (error) {
-
-      console.error(error);
-
-      Swal.fire(
-        "Error",
-        "No se pudieron cargar las evidencias",
-        "error"
+    const resp =
+      await listar(
+        usuario,
+        pagina,
+        POR_PAGINA
       );
 
-    } finally {
+    const ordenado =
+      [...resp.registros].sort(
 
-      setLoading(false);
-    }
+        (a, b) =>
+
+          new Date(b.fecha) -
+          new Date(a.fecha)
+
+      );
+
+    setData(
+      ordenado
+    );
+
+    setTotal(
+      resp.total
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    Swal.fire(
+      "Error",
+      "No se pudieron cargar las evidencias",
+      "error"
+    );
+
+  } finally {
+
+    setLoading(false);
+
   }
+}
 
   useEffect(() => {
     cargar();
-  }, []);
+  }, [pagina]);
 
   async function handleEliminar(id) {
 
@@ -155,7 +211,7 @@ export default function MisEvidencias() {
             badge
             bg-primary
           ">
-            {data.length}
+            {total}
           </span>
         </div>
 
@@ -222,7 +278,7 @@ export default function MisEvidencias() {
                 <tbody>
 
                   {
-                    dataPaginada.map(item => (
+                    data.map(item => (
 
                       <tr key={item.id}>
 

@@ -36,47 +36,98 @@ export default function AdminEvidencias() {
     const [pagina, setPagina] =
   useState(1);
 
+  const [total, setTotal] =
+  useState(0);
+
 const POR_PAGINA = 50;
 
-  async function cargar() {
+//   async function cargar() {
 
-    try {
+//     try {
 
-      setLoading(true);
+//       setLoading(true);
 
-      const resp =
-  await listarTodas();
+//       const resp =
+//   await listarTodas(
+//     pagina,
+//     POR_PAGINA
+//   );
 
-const ordenado =
-  [...resp].sort(
-    (a, b) =>
-      new Date(b.fecha) -
-      new Date(a.fecha)
-  );
+// setData(
+//   resp.registros
+// );
 
-setData(ordenado);
+// setTotal(
+//   resp.total
+// );
 
-    } catch (error) {
+// const ordenado =
+//   [...resp].sort(
+//     (a, b) =>
+//       new Date(b.fecha) -
+//       new Date(a.fecha)
+//   );
 
-      console.error(error);
+// setData(ordenado);
 
-      Swal.fire(
-        "Error",
-        "No se pudieron cargar las evidencias",
-        "error"
+//     } catch (error) {
+
+//       console.error(error);
+
+//       Swal.fire(
+//         "Error",
+//         "No se pudieron cargar las evidencias",
+//         "error"
+//       );
+
+//     } finally {
+
+//       setLoading(false);
+//     }
+//   }
+
+async function cargar() {
+
+  try {
+
+    setLoading(true);
+
+    const resp =
+      await listarTodas(
+        pagina,
+        POR_PAGINA
       );
 
-    } finally {
+    setData(
+      resp.registros
+    );
 
-      setLoading(false);
-    }
+    setTotal(
+      resp.total
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    Swal.fire(
+      "Error",
+      "No se pudieron cargar las evidencias",
+      "error"
+    );
+
+  } finally {
+
+    setLoading(false);
+
   }
+}
 
-  useEffect(() => {
+useEffect(() => {
 
-    cargar();
+  cargar();
 
-  }, []);
+}, [pagina]);
 
   const renderUsuario = (usuario) => {
   switch (usuario) {
@@ -107,26 +158,32 @@ setData(ordenado);
   }
 };
 
-const inicio =
-  (pagina - 1) *
-  POR_PAGINA;
+// const inicio =
+//   (pagina - 1) *
+//   POR_PAGINA;
 
-const fin =
-  inicio +
-  POR_PAGINA;
+// const fin =
+//   inicio +
+//   POR_PAGINA;
 
-const dataPaginada =
-  data.slice(
-    inicio,
-    fin
-  );
+// const dataPaginada =
+//   data.slice(
+//     inicio,
+//     fin
+//   );
+
+// const totalPaginas =
+//   Math.ceil(
+//     data.length /
+//     POR_PAGINA
+//   );
 
 const totalPaginas =
   Math.ceil(
-    data.length /
+    total /
     POR_PAGINA
   );
-
+  
   if (loading) {
 
     return (
@@ -217,7 +274,7 @@ const totalPaginas =
               badge
               bg-dark
             ">
-              {data.length}
+              {total}
             </span>
 
           </div>
@@ -248,7 +305,7 @@ const totalPaginas =
               <tbody>
 
                 {
-                  dataPaginada.map(item => (
+                  data.map(item => (
                     <tr key={item.id}>
                       <td>
                         {
